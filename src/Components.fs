@@ -1,7 +1,8 @@
 namespace App
 
+open System
 open Feliz
-open Feliz.Router
+open Fable.Core.JS
 
 type Components =
     /// <summary>
@@ -10,10 +11,20 @@ type Components =
     /// </summary>
     [<ReactComponent>]
     static member ConwayGameOfLife() =
-        let X = 100
-        let Y = 100
+
+        let X = 50
+        let Y = X
+
         let (gameStarted, setGameStarted) = React.useState(false)
         let (gameState, setGameState) = React.useStateWithUpdater(ConwayGameOfLife.initialState X Y)
+
+        let subscribeToTimer() =
+            let subscriptionId =
+                setInterval (fun _ -> setGameState (fun prevState -> ConwayGameOfLife.updateState prevState)) 5000
+            React.createDisposable (fun _ -> clearTimeout subscriptionId)
+
+        React.useEffect(subscribeToTimer, [| |])
+
         Html.div [
             prop.style [ style.textAlign.center ]
             prop.children [
@@ -25,20 +36,25 @@ type Components =
                     ]
                 else
                     Html.div [
-                        prop.className [
-                            ConwayGameOfLife.stylesheet.["slot-container"]
+                        prop.style [
+                            style.display.flex
+                            style.flexWrap.wrap
                         ]
                         prop.children [
                             for y in 0..Y-1 do
-                                for x in 0..X-1 do
-                                    Html.div [
-                                        prop.className [
-                                            if ConwayGameOfLife.isCellAlive x y gameState then
-                                                ConwayGameOfLife.stylesheet.["slot-alive"]
-                                            else
-                                                ConwayGameOfLife.stylesheet.["slot-dead"]
+                                Html.div [
+                                    for x in 0..X-1 do
+                                        Html.div [
+                                            prop.style [
+                                                style.width 10
+                                                style.height 10
+                                                if ConwayGameOfLife.isCellAlive x y gameState then
+                                                    style.backgroundColor "black"
+                                                else
+                                                    style.backgroundColor "white"
+                                            ]
                                         ]
-                                    ]
+                                ]
                         ]
                     ]
                     Html.button [

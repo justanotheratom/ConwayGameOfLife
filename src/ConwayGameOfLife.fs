@@ -68,5 +68,3 @@ let updateState gameState =
                         | _ -> Dead
             ]
     }
-
-let stylesheet = Stylesheet.load "./conwaygameoflife.module.css"
