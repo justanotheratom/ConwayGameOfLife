@@ -20,7 +20,7 @@ type Components =
 
         let subscribeToTimer() =
             let subscriptionId =
-                setInterval (fun _ -> setGameState (fun prevState -> ConwayGameOfLife.updateState prevState)) 5000
+                setInterval (fun _ -> setGameState (fun prevState -> ConwayGameOfLife.updateState prevState)) 500
             React.createDisposable (fun _ -> clearTimeout subscriptionId)
 
         React.useEffect(subscribeToTimer, [| |])

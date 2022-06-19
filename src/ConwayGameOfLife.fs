@@ -29,17 +29,23 @@ let isCellAlive x y gameState =
     | Alive -> true
 
 let countLiveNeighbors x y gameState =
-    gameState.Grid
-    |> List.indexed
+    [ for i in (x-1)..(x+1) do
+        for j in (y-1)..(y+1) do
+            (i, j)
+    ]
     |> List.filter (
-        fun (i, _) ->
-            let (x', y') = toXY i gameState
-            abs(x' - x) <= 1 && abs(y' - y) <= 1
+        fun (i, j) ->
+            i >= 0 && i < gameState.Width
+            &&
+            j >= 0 && j < gameState.Height
+            &&
+            (i, j) <> (x, y)
     )
-    |> List.sumBy (fun (_, cell) ->
+    |> List.map (fun (i, j) -> gameState.Grid.[toIndex i j gameState])
+    |> List.sumBy (fun cell ->
         match cell with
-        | Alive -> 1
         | Dead -> 0
+        | Alive -> 1
     )
 
 let initialState width height =
