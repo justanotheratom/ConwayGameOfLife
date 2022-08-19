@@ -12,8 +12,10 @@ type Components =
     [<ReactComponent>]
     static member ConwayGameOfLife() =
 
-        let X = 50
+        let X = 15
         let Y = X
+        let w = 10
+        let h = w
 
         let (gameStarted, setGameStarted) = React.useState(false)
         let (gameState, setGameState) = React.useStateWithUpdater(ConwayGameOfLife.initialState X Y)
@@ -37,8 +39,10 @@ type Components =
                 else
                     Html.div [
                         prop.style [
+                            style.margin.auto
+                            //style.border(3, borderStyle.solid, color.green)
+                            style.width (X * w)
                             style.display.flex
-                            style.flexWrap.wrap
                         ]
                         prop.children [
                             for y in 0..Y-1 do
@@ -46,8 +50,8 @@ type Components =
                                     for x in 0..X-1 do
                                         Html.div [
                                             prop.style [
-                                                style.width 10
-                                                style.height 10
+                                                style.width w
+                                                style.height w
                                                 if ConwayGameOfLife.isCellAlive x y gameState then
                                                     style.backgroundColor "black"
                                                 else
