@@ -1,18 +1,14 @@
 namespace App
 
-open System
 open Feliz
 open Fable.Core.JS
 
 type Components =
-    /// <summary>
-    /// The simplest possible React component.
-    /// Shows a header with the text Hello World
-    /// </summary>
+
     [<ReactComponent>]
     static member ConwayGameOfLife() =
 
-        let X = 15
+        let X = 30
         let Y = X
         let w = 10
         let h = w
@@ -40,7 +36,8 @@ type Components =
                     Html.div [
                         prop.style [
                             style.margin.auto
-                            //style.border(3, borderStyle.solid, color.green)
+                            style.marginBottom X
+                            style.border(1, borderStyle.dotted, color.black)
                             style.width (X * w)
                             style.display.flex
                         ]
@@ -51,7 +48,7 @@ type Components =
                                         Html.div [
                                             prop.style [
                                                 style.width w
-                                                style.height w
+                                                style.height h
                                                 if ConwayGameOfLife.isCellAlive x y gameState then
                                                     style.backgroundColor "black"
                                                 else
